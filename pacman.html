@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>pacman</title>
+	<link rel="icon" type="image/icon" href="images/pacman2.gif">
+	<style type="text/css">
+		#div1{
+			position: absolute;
+		}
+		#div1 #pacman{
+			position: relative;
+		}
+	</style>
+</head>
+<body onkeydown="changeDirection(event)">
+	<audio id="hit" preload="auto" controls hidden>
+		<source src="audios/hit.mp3" type="audio/mp3">
+	</audio>
+	<div style="position: absolute;">
+
+	<div id='div1' style='height:600px;width:600px;background-color: blue;border-width: 5px;border-color: red;border-style: solid;' >
+		<img id='pacman'src="images/pacman3.gif" height="20" width="20" style="left:0px;top:0px;z-index: 1">
+		<img id='goast'src='images/2.gif' height="20" width="20" style="position: absolute;left:0px;top:0px;" hidden>
+	</div>
+	<div style="height: 200px;width: 500px;position: relative;top: 100px;left: 700px">
+		<center><p>click start to start the game</p></center>
+		<center><button style="height: 50px;width: 200px;" onclick="startgame()">Start</button><p></p>
+		<div style='height:100px;width:200px;border-width:2px;border-color: black;border-style: solid;'>
+			<h2 style="float:left;padding-left: 20px">Score</h2>
+			<h2 id="score" style="float: right;padding-right: 20px">0</h2>
+		</div>
+		<p></p>
+		<div style='height:100px;width:200px;border-width:2px;border-color: black;border-style: solid;'>
+			<h2 style="float:left;padding-left: 20px">HighScore</h2>
+			<h2 id="highscore" style="float: right;padding-right: 20px">0</h2>
+		</div>
+		<p></p>
+		<button style="height: 50px;width: 200px;" onclick="restart()">ReStart</button>
+	</center>
+	</div>
+
+	<script type="text/javascript">
+		var scores=0;
+		var runner=document.getElementById('pacman');
+		var food=document.getElementById('goast');
+		highscores=0;
+		function changeDirection(event){
+				if(event.keyCode==37){
+					var lx=parseInt(document.getElementById('pacman').style.left);
+					var li=lx;
+					leftMove(li);
+					runner.style.transform='rotate(180deg)';
+				}
+				else if(event.keyCode==38){
+					var tx=parseInt(document.getElementById('pacman').style.top);
+					var ti=tx;
+					topMove(ti);
+					runner.style.transform='rotate(270deg)'
+				}
+				else if(event.keyCode==39){
+					var rx=parseInt(document.getElementById('pacman').style.left);
+					var ri=rx;
+					rightMove(ri);
+					runner.style.transform='rotate(0deg)'
+				}
+				else if(event.keyCode==40){
+					var bx=parseInt(document.getElementById('pacman').style.top);
+					var bi=bx;
+					bottomMove(bi);
+					runner.style.transform='rotate(90deg)'
+				}
+				check();
+		}
+		function leftMove(a)
+		{
+
+			a=a-5;
+			if(a>=0){
+			document.getElementById('pacman').style.left = a+'px';
+			}
+		}
+		function topMove(a)
+		{
+			a=a-5;
+			if(a>=0){
+			document.getElementById('pacman').style.top = a+'px';
+			}
+		}
+		function rightMove(a)
+		{
+			a=a+5;
+			if(a<590){
+			document.getElementById('pacman').style.left = a+'px';
+		
+			}
+		}
+		function bottomMove(a)
+		{
+			a=a+5;
+			if(a<590){
+			document.getElementById('pacman').style.top = a+'px';
+			}
+		}
+		function startgame(){
+			foodPosition();
+			document.getElementById('goast').hidden=false;
+
+		}
+		
+		function check(){
+			if((((parseInt(runner.style.left)+5+'px') == food.style.left)||((parseInt(runner.style.left)-5+'px') == food.style.left)||((runner.style.left) == food.style.left)) && (((parseInt(runner.style.top)+5+'px') == food.style.top)||((parseInt(runner.style.left)-5+'px') == food.style.top)||((runner.style.top) == food.style.top))){
+				document.getElementById('hit').play();
+					scores+=1;
+					document.getElementById('score').innerHTML=''+scores;
+					if(scores>highscores)
+					{
+						highscores=scores;
+						document.getElementById('highscore').innerHTML=scores;
+					}
+					foodPosition();
+				}
+			}
+		function foodPosition(){
+			var pos1=Math.floor(Math.random() * 117)*5 ;
+			var pos2=Math.floor(Math.random() * 117)*5 ;
+			if( runner.style.left != pos1 || runner.style.top != pos2 )
+			{
+				food.style.left=pos1+'px';
+				food.style.top=pos2+'px';
+			}
+			else{
+				foodPosition();
+			}
+		}
+		function  restart(){
+			runner.style.left='0px';
+			runner.style.top='0px';
+			food.style.hidden='true';
+			document.getElementById('score').innerHTML='0';
+			startgame();
+			scores=0;
+			runner.style.transform='rotate(0deg)';
+		}
+	</script>
+	 
+</div>
+</body>
+</html>
+
+<!--
+
+
+	down
+	if(flagright==1)
+					{
+						runner.style.transform='rotate(90deg)';
+					}
+					else if(flagup==1){
+						runner.style.transform='rotate(180deg)';
+					}
+					else if(flagleft==1)
+					{
+						runner.style.transform='rotate(270deg)';
+					}
+	right
+	if(flagleft==1)
+					{
+						runner.style.transform='rotate(180deg)';
+					}
+					else if(flagup==1){
+						runner.style.transform='rotate(90deg)';
+					}
+					else if(flagdown==1)
+					{
+						runner.style.transform='rotate(270deg)';
+					}
+
+					up
+					
